@@ -22,7 +22,7 @@ mkdir -p /etc/ssl/v2ray/ && sudo openssl req -x509 -nodes -days 3650 -newkey rsa
 
 curl https://raw.githubusercontent.com/mukswilly/psicore-binaries/master/psiphond/psiphond -o psiphond
 chmod +x psiphond
-./psiphond -ipaddress 127.0.0.1 -protocol FRONTED-MEEK-OSSH:2052 -protocol FRONTED-WSS-OSSH:2053 generate
+./psiphond -ipaddress 0.0.0.0 -protocol FRONTED-MEEK-OSSH:3001 -protocol FRONTED-WSS-OSSH:3002 generate
 
 jq -c '.RunPacketTunnel = true' psiphond.config  > tmp.$$.json && mv tmp.$$.json psiphond.config
 jq -c '.PacketTunnelEgressInterface = "'${interf}'"' psiphond.config  > tmp.$$.json && mv tmp.$$.json psiphond.config
@@ -65,7 +65,7 @@ echo 'server {
 
         location / {
                 proxy_redirect off;
-                proxy_pass https://127.0.0.1:2052;
+                proxy_pass https://127.0.0.1:3001;
                 proxy_http_version 1.1;
         }
 }' > /etc/nginx/sites-available/default
@@ -89,7 +89,7 @@ echo 'server {
 
         location / {
                 proxy_redirect off;
-                proxy_pass https://127.0.0.1:2053;
+                proxy_pass https://127.0.0.1:3002;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection "upgrade";
